@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 定义组件扫描器，指定需要扫描的包 -->
+    <context:component-scan base-package="springmvc.controller"/>
+
+    <!-- 配置拦截器(只能拦截请求，不能拦截具体页面) -->
+    <mvc:interceptors>
+        <!-- 全局拦截器：此拦截器会拦截所有请求 -->
+        <bean class="springmvc.interceptor.UserInterceptor"/>
+
+        <!-- 拦截器1：仅拦截符合条件的请求 -->
+        <mvc:interceptor>
+            <!-- 定义拦截器作用的路径。拦截所有路径，除去 `/hello1.do` -->
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/hello1.do"/>
+            <!-- 配置拦截器的实际类 -->
+            <bean class="springmvc.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>
